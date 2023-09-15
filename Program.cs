@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<PhotoGalleryDbContext>(options =>
 {
-    options.UseInMemoryDatabase("PhotoGallery");
+    options.UseSqlServer(builder.Configuration.GetConnectionString("photoGallery"));
 });
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

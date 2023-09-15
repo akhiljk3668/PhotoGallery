@@ -22,7 +22,7 @@ public class PhotoGalleryDbContext : DbContext
             .HasForeignKey(x => x.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        var password = "SuperSecretPassword!";
+        var password = "ga11ery!";
         var salt = Convert.ToBase64String(RandomNumberGenerator.GetBytes(128 / 8));
         var hashedPassword = Convert.ToBase64String(KeyDerivation.Pbkdf2(
             password: password!,
@@ -32,7 +32,7 @@ public class PhotoGalleryDbContext : DbContext
             numBytesRequested: 256 / 8));
 
         modelBuilder.Entity<User>().HasData(
-            new User { Id = 1, Username = "admin", Password = hashedPassword, Salt = salt }
+            new User { Id = 1, Username = "galleryAdmin", Password = hashedPassword, Salt = salt }
         );
     }
 }

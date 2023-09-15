@@ -16,7 +16,7 @@
             <div class="col">
                 <div class="card text-center">
                     <div class="card-body">
-                        <img src="/images/@photo.FileName" class="img-fluid" data-image="@photo.FileName" data-bs-toggle="modal"
+                        <img src="@Html.Raw(photo.FileName)" class="img-fluid" data-image="@photo.Name" data-bs-toggle="modal"
                             data-bs-target="#photoDisplay" style="cursor: pointer;" />
                     </div>
                     @if (User.Identity!.IsAuthenticated)
