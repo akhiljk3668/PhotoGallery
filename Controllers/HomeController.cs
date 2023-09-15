@@ -128,7 +128,7 @@ public class HomeController : Controller
             string blobstorageconnection = _configuration.GetValue<string>("BlobConnectionString");
             CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse(blobstorageconnection);
             CloudBlobClient cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
-            CloudBlobContainer cloudBlobContainer = cloudBlobClient.GetContainerReference(_configuration.GetValue<string>("BlobContainerName"));
+            CloudBlobContainer cloudBlobContainer = cloudBlobClient.GetContainerReference(_configuration.GetValue<string>("BlobContainerEndPoint"));
             CloudBlockBlob blockBlob = cloudBlobContainer.GetBlockBlobReference(fileName);
             await blockBlob.DownloadToStreamAsync(memoryStream);
             Byte[] bytes = memoryStream.ToArray();
