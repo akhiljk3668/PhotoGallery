@@ -1,0 +1,45 @@
+name: Trigger auto deployment for fotoapp
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ Dev ]
+    paths:
+    - '//**'
+    - '.github/workflows/fotoapp-AutoDeployTrigger-20cede35-1ea9-46f7-87c9-77e1982d1f67.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:      
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions: 
+      id-token: write #This is required for requesting the OIDC JWT Token
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.FOTOAPP_AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.FOTOAPP_AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.FOTOAPP_AZURE_SUBSCRIPTION_ID }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          appSourcePath: ${{ github.workspace }} 
+          registryUrl: fotogallery.azurecr.io
+          registryUsername: ${{ secrets.FOTOAPP_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.FOTOAPP_REGISTRY_PASSWORD }}
+          containerAppName: fotoapp
+          resourceGroup: PhotoGallery
+          imageToBuild: fotogallery.azurecr.io/fotoapp:${{ github.sha }}
+          dockerfilePath: Dockerfile
+
+
